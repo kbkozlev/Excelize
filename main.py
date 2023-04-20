@@ -51,4 +51,5 @@ if __name__ == "__main__":
     font_size = int(settings["GUI"]["font_size"])
     sg.theme(theme)
     sg.set_options(font=(font_family, font_size))
+
     main_window()
