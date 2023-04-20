@@ -12,18 +12,21 @@ def is_valid_path(filepath):
 
 def combine_worksheets(excel_file_path):
     df = pd.concat(pd.read_excel(excel_file_path, sheet_name=None), ignore_index=True)
-    return df
+    filename = Path(excel_file_path).stem + "_combined"
+    return df, filename
 
 
-def convert_to_csv(excel_file_path, output_folder, df):
-    filename = Path(excel_file_path).stem
+def combine_workbooks():
+    pass
+
+
+def convert_to_csv(df, filename, output_folder):
     outputfile = Path(output_folder) / f"{filename}.csv"
     df.to_csv(outputfile, index=False)
 
 
-def convert_to_excel(excel_file_path, output_folder, df):
-    filename = Path(excel_file_path).stem
-    outputfile = Path(output_folder) / f"{filename}-combined.xlsx"
+def convert_to_excel(df, filename, output_folder):
+    outputfile = Path(output_folder) / f"{filename}.xlsx"
     df.to_excel(outputfile, index=False)
 
 
@@ -40,18 +43,19 @@ def main_window():
 
     while True:
         event, values = window.read()
+        df, filename = combine_worksheets(values["-IN-"])
+
         if event in (sg.WINDOW_CLOSED, "Exit"):
             break
 
         if event == "Execute":
             if values["-WS-"]:
                 if is_valid_path(values["-IN-"]):
-                    combine_worksheets(values["-IN-"])
                     if values["-CSV-"]:
-                        convert_to_csv(values["-IN-"], values["-OUT-"], combine_worksheets(values["-IN-"]))
+                        convert_to_csv(df, filename, values["-OUT-"])
                     if values["-XLS-"]:
-                        convert_to_excel(values["-IN-"], values["-OUT-"], combine_worksheets(values["-IN-"]))
-                    sg.popup_no_titlebar("Done! :)")
+                        convert_to_excel(df, filename, values["-OUT-"])
+                    sg.popup_quick_message("Done! :)")
             elif values["-WB-"]:
                 print("fail")
 
@@ -60,7 +64,7 @@ if __name__ == "__main__":
     SETTINGS_PATH = Path.cwd()
     # create the settings object and use ini format
     settings = sg.UserSettings(
-        path=SETTINGS_PATH, filename="config.ini", use_config_file=True, convert_bools_and_none=True
+        path=str(SETTINGS_PATH), filename="config.ini", use_config_file=True, convert_bools_and_none=True
     )
     theme = settings["GUI"]["theme"]
     font_family = settings["GUI"]["font_family"]
