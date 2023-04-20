@@ -6,18 +6,18 @@ from pathlib import Path
 def is_valid_path(filepath):
     if filepath and Path(filepath).exists():
         return True
-    sg.popup_error("Filepath not correct")
+    sg.popup_no_titlebar("File not found")
     return False
 
 
-def convert_worksheets(filepath):
-    df = pd.concat(pd.read_excel(filepath, sheet_name=None), ignore_index=True)
-    df.to_csv("Test-new.csv", index=False, header=True)
-    sg.popup_no_titlebar("Done! :)")
+def combine_worksheets(excel_file_path):
+    df = pd.concat(pd.read_excel(excel_file_path, sheet_name=None), ignore_index=True)
+    return df
+    #df.to_csv("Test-new.csv", index=False, header=True)
+    #sg.popup_no_titlebar("Done! :)")
 
 
-def convert_to_csv(excel_file_path, output_folder, sheet_name):
-    df = pd.read_excel(excel_file_path, sheet_name)
+def convert_to_csv(excel_file_path, output_folder, df):
     filename = Path(excel_file_path).stem
     outputfile = Path(output_folder) / f"{filename}.csv"
     df.to_csv(outputfile, index=False)
@@ -28,9 +28,9 @@ def main_window():
     layout = [[sg.T("Input File:", s=15, justification="r"), sg.I(key="-IN-"),
                sg.FilesBrowse(file_types=(("Excel Files", "*.xls*"), ("All Files", "*.*")))],
               [sg.T("Output Folder:", s=15, justification="r"), sg.I(key="-OUT-"), sg.FolderBrowse()],
-              [sg.T("Input File Type:", s=15, justification="r"), sg.Radio("Worksheet", "dType", default=True), sg.Radio("Workbook", "dType")],
+              [sg.T("Input File Type:", s=15, justification="r"), sg.Radio("Worksheet", "dType", default=True, key="-WS-"), sg.Radio("Workbook", "dType", key="-WB-")],
               [sg.T("Output File Type:", s=15, justification="r"), sg.Checkbox(".csv", default=True), sg.Checkbox(".xlsx")],
-              [sg.B("Combine", s=16), sg.B("Convert", s=16), sg.Exit(button_color="tomato", s=16)]]
+              [sg.B("Execute", s=16), sg.Exit(button_color="tomato", s=16)]]
 
     window_title = settings["GUI"]["title"]
     window = sg.Window(window_title, layout, use_custom_titlebar=True)
@@ -40,8 +40,12 @@ def main_window():
         if event in (sg.WINDOW_CLOSED, "Exit"):
             break
 
-        if event == "Combine":
-            convert_worksheets(values["-IN-"])
+        if event == "Execute":
+            if values["-WS-"]:
+                if is_valid_path(values["-IN-"]):
+                    combine_worksheets(values["-IN-"])
+            elif values["-WB-"]:
+                print("fail")
 
 
 if __name__ == "__main__":
