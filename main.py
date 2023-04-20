@@ -2,15 +2,18 @@ from functions import *
 
 
 def main_window():
-    layout = [  [sg.T("Input File:", s=13, justification="r"), sg.I(key="-IN-"),
-                sg.FilesBrowse(file_types=(("Excel Files", "*.xls*"), ("All Files", "*.*")), s=13)],
-                [sg.T("Output Folder:", s=13, justification="r"), sg.I(key="-OUT-"), sg.FolderBrowse(s=13)],
-                [sg.T("Input File Type:", s=13, justification="r"), sg.Radio("Worksheet", "dType", default=True, key="-WS-"), sg.Radio("Workbook", "dType", key="-WB-")],
-                [sg.T("Output File Type:", s=13, justification="r"), sg.Checkbox(".csv", default=True, key="-CSV-"), sg.Checkbox(".xlsx", key="-XLS-")],
-                c([sg.B("Execute", s=16), sg.Exit(button_color="tomato", s=16)]) ]
+
+    layout = [  [sg.T("Input File(s):", s=15, justification="r"), sg.I(key="-IN-"),
+                sg.FilesBrowse(file_types=(("Excel Files", "*.xls*"), ("All Files", "*.*")), s=15)],
+                [sg.T("Output Folder:", s=15, justification="r"), sg.I(key="-OUT-"), sg.FolderBrowse(s=15)],
+                [sg.T("Input File Type:", s=15, justification="r"), sg.Radio("Worksheet", "dType", default=True, key="-WS-"),
+                sg.Radio("Workbook", "dType", key="-WB-")],
+                [sg.T("Output File Type(s):", s=15, justification="r"), sg.Checkbox(".csv", default=True, key="-CSV-"),
+                sg.Checkbox(".xlsx", key="-XLS-")],
+                c([sg.B("Execute", s=16), sg.Exit(button_color="tomato", s=16)])    ]
 
     window_title = settings["GUI"]["title"]
-    window = sg.Window(window_title, layout, use_custom_titlebar=True, keep_on_top=True)
+    window = sg.Window(window_title, layout, use_custom_titlebar=True, keep_on_top=True, finalize=True)
 
     while True:
         event, values = window.read()
