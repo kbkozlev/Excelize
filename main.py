@@ -13,15 +13,18 @@ def is_valid_path(filepath):
 def combine_worksheets(excel_file_path):
     df = pd.concat(pd.read_excel(excel_file_path, sheet_name=None), ignore_index=True)
     return df
-    #df.to_csv("Test-new.csv", index=False, header=True)
-    #sg.popup_no_titlebar("Done! :)")
 
 
 def convert_to_csv(excel_file_path, output_folder, df):
     filename = Path(excel_file_path).stem
     outputfile = Path(output_folder) / f"{filename}.csv"
     df.to_csv(outputfile, index=False)
-    sg.popup_no_titlebar("Done! :)")
+
+
+def convert_to_excel(excel_file_path, output_folder, df):
+    filename = Path(excel_file_path).stem
+    outputfile = Path(output_folder) / f"{filename}-combined.xlsx"
+    df.to_excel(outputfile, index=False)
 
 
 def main_window():
@@ -29,7 +32,7 @@ def main_window():
                sg.FilesBrowse(file_types=(("Excel Files", "*.xls*"), ("All Files", "*.*")))],
               [sg.T("Output Folder:", s=15, justification="r"), sg.I(key="-OUT-"), sg.FolderBrowse()],
               [sg.T("Input File Type:", s=15, justification="r"), sg.Radio("Worksheet", "dType", default=True, key="-WS-"), sg.Radio("Workbook", "dType", key="-WB-")],
-              [sg.T("Output File Type:", s=15, justification="r"), sg.Checkbox(".csv", default=True), sg.Checkbox(".xlsx")],
+              [sg.T("Output File Type:", s=15, justification="r"), sg.Checkbox(".csv", default=True, key="-CSV-"), sg.Checkbox(".xlsx", key="-XLS-")],
               [sg.B("Execute", s=16), sg.Exit(button_color="tomato", s=16)]]
 
     window_title = settings["GUI"]["title"]
@@ -44,6 +47,11 @@ def main_window():
             if values["-WS-"]:
                 if is_valid_path(values["-IN-"]):
                     combine_worksheets(values["-IN-"])
+                    if values["-CSV-"]:
+                        convert_to_csv(values["-IN-"], values["-OUT-"], combine_worksheets(values["-IN-"]))
+                    if values["-XLS-"]:
+                        convert_to_excel(values["-IN-"], values["-OUT-"], combine_worksheets(values["-IN-"]))
+                    sg.popup_no_titlebar("Done! :)")
             elif values["-WB-"]:
                 print("fail")
 
