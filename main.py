@@ -25,9 +25,9 @@ def main_window():
             break
 
         if event == "Execute":
+            if is_valid_path(input_path):
 
-            if values["-WS-"]:
-                if is_valid_path(input_path):
+                if values["-WS-"]:
 
                     if values["-CSV-"]:
                         convert_to_csv(df, filename, output_path)
@@ -36,8 +36,8 @@ def main_window():
                         convert_to_excel(df, filename, output_path)
                     sg.popup_quick_message("Done! :)")
 
-            elif values["-WB-"]:
-                print("fail")
+                elif values["-WB-"]:
+                    print("fail")
 
 
 if __name__ == "__main__":
