@@ -7,11 +7,8 @@ def c(elems):
     return [sg.Stretch(), *elems, sg.Stretch()]
 
 
-def is_valid_path(filepath):
-    if filepath and Path(filepath).exists():
-        return True
-    sg.popup_no_titlebar("File not found")
-    return False
+def border(elems):
+    return sg.Frame('', [[elems]])
 
 
 def combine_worksheets(excel_file_path):
