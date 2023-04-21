@@ -33,13 +33,15 @@ def main_window():
             if is_valid_path(input_path) and is_valid_path(output_path):
 
                 if values["-WS-"]:
-                    window["-OUTPUT-"].update("Combining Worksheets")
+                    window["-OUTPUT-"].update("***Combining Worksheets in progress***")
+                    window.refresh()
                     df, filename = combine_worksheets(input_path)
 
                     if values["-CSV-"]:
-                        window["-OUTPUT-"].update("Starting conversion to CSV")
+                        window["-OUTPUT-"].update("***Conversion to CSV in progress***")
+                        window.refresh()
                         convert_to_csv(df, filename, output_path)
-                        window["-OUTPUT-"].update("Conversion finished")
+                        window["-OUTPUT-"].update("***Conversion successful***")
 
                     if values["-XLS-"]:
                         convert_to_excel(df, filename, output_path)
