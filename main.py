@@ -13,7 +13,7 @@ def main_window():
                 c([sg.B("Execute", s=16), sg.Exit(button_color="tomato", s=16)])    ]
 
     window_title = settings["GUI"]["title"]
-    window = sg.Window(window_title, layout, use_custom_titlebar=True, keep_on_top=True, finalize=True)
+    window = sg.Window(window_title, layout, use_custom_titlebar=True, keep_on_top=True)
 
     while True:
         event, values = window.read()
