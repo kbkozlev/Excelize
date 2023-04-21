@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 
 
-def c(elems):
+def center(elems):
     return [sg.Stretch(), *elems, sg.Stretch()]
 
 
@@ -17,8 +17,10 @@ def combine_worksheets(excel_file_path):
     return df, filename
 
 
-def combine_workbooks():
-    pass
+def combine_workbooks(excel_file_path):
+    wb_list = excel_file_path.split(';')
+    for item in wb_list:
+        print(item)
 
 
 def convert_to_csv(df, filename, output_folder):
