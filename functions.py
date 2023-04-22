@@ -3,31 +3,67 @@ import pandas as pd
 from pathlib import Path
 
 
-def center(elems):
-    return [sg.Stretch(), *elems, sg.Stretch()]
+def center(elms):
+    return [sg.Stretch(), *elms, sg.Stretch()]
 
 
-def border(elems):
-    return sg.Frame('', [[elems]])
+def border(elms):
+    return sg.Frame('', [[elms]])
 
 
-def combine_worksheets(excel_file_path):
-    df = pd.concat(pd.read_excel(excel_file_path, sheet_name=None), ignore_index=True)
-    filename = Path(excel_file_path).stem + "_combined"
-    return df, filename
-
-
-def combine_workbooks(excel_file_path):
-    wb_list = excel_file_path.split(';')
+def is_valid_path(filepath, window):
+    wb_list = filepath.split(';')
     for item in wb_list:
-        print(item)
+        if item and Path(item).exists():
+            return True
+        window["-OUTPUT-"].update("***Filepath not valid***")
+        window.refresh()
 
 
-def convert_to_csv(df, filename, output_folder):
-    outputfile = Path(output_folder) / f"{filename}.csv"
-    df.to_csv(outputfile, index=False)
+def combine_and_convert_ws(excel_file_path, csv, xls, output_folder, window):
+    ws_list = excel_file_path.split(';')
+    for item in ws_list:
+        window["-OUTPUT-"].update(f"*** Combining Worksheet from {Path(item).stem} ***")
+        window.refresh()
+        df = pd.concat(pd.read_excel(item, sheet_name=None), ignore_index=True)
+        filename = Path(item).stem + "_combined"
+        if csv:
+            outfile = Path(output_folder) / f"{filename}.csv"
+            window["-OUTPUT-"].update(f"*** Converting {Path(item).stem} to CSV ***")
+            window.refresh()
+            df.to_csv(outfile, index=False)
+        if xls:
+            outfile = Path(output_folder) / f"{filename}.xlsx"
+            window["-OUTPUT-"].update(f"*** Converting {Path(item).stem} to XLSX ***")
+            window.refresh()
+            df.to_excel(outfile, index=False)
+
+    window["-OUTPUT-"].update("*** Done ***")
+    window.refresh()
 
 
-def convert_to_excel(df, filename, output_folder):
-    outputfile = Path(output_folder) / f"{filename}.xlsx"
-    df.to_excel(outputfile, index=False)
+def combine_workbooks(excel_file_path, csv, xls, output_folder, window):
+    wb_list = excel_file_path.split(';')
+    new_name = sg.popup_get_text("Name of new Workbook:")
+    final_df = pd.DataFrame()
+    for item in wb_list:
+        window["-OUTPUT-"].update(f"*** Loading File {Path(item).stem} ***")
+        window.refresh()
+        df = pd.read_excel(item)
+        final_df = final_df._append(df, ignore_index=True)
+
+    if csv:
+        outfile = Path(output_folder) / f"{new_name}.csv"
+        window["-OUTPUT-"].update(f"*** Converting {new_name} to CSV ***")
+        window.refresh()
+        final_df.to_csv(outfile, index=False)
+
+    if xls:
+        outfile = Path(output_folder) / f"{new_name}.xlsx"
+        window["-OUTPUT-"].update(f"*** Converting {new_name} to XLSX ***")
+        window.refresh()
+        final_df.to_excel(outfile, index=False)
+
+    window["-OUTPUT-"].update("*** Done ***")
+    window.refresh()
+
