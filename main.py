@@ -3,7 +3,6 @@ import time
 
 
 def main_window():
-
     menu_bar = [['Help', 'About']]
 
     layout = [[sg.Menubar(menu_bar)],
@@ -35,6 +34,13 @@ def main_window():
 
         if event in (sg.WINDOW_CLOSED, "Exit"):
             break
+
+        if event == "About":
+            sg.popup(str(window_title),
+                     "\nCreated by Kaloian Kozlev"
+                     "\nGithub: https://github.com/kbkozlev/Excel_Combine_Convert"
+                     "\nLicense:",
+                     keep_on_top=True, line_width=60)
 
         if event == "Combine":
 
