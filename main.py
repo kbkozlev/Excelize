@@ -1,14 +1,12 @@
-import PySimpleGUI
-
 from functions import *
 import time
 
 
 def main_window():
     layout = [[sg.T("Input File(s):", s=l_side_t_size, justification="r"), sg.I(key="-IN-"),
-               sg.FilesBrowse(file_types=(("Excel Files", "*.xls*"), ("All Files", "*.*")), s=r_side_b_size)],
+               sg.FilesBrowse(file_types=(("Excel Files", "*.xls*"), ("All Files", "*.*")), s=r_side_b_size, button_color=b_colour)],
               [sg.T("Output Folder:", s=l_side_t_size, justification="r"), sg.I(key="-OUT-"),
-               sg.FolderBrowse(s=r_side_b_size)],
+               sg.FolderBrowse(s=r_side_b_size, button_color=b_colour)],
               [sg.T("Input File Type:", s=l_side_t_size, justification="r"),
                sg.Radio("Worksheet", "dType", default=True, key="-WS-"),
                sg.Radio("Workbook", "dType", key="-WB-"),
@@ -18,10 +16,11 @@ def main_window():
                sg.Checkbox(".xlsx", key="-XLS-")],
               [sg.T("Exec. Status:", s=l_side_t_size, justification="r", font=(font_family, font_size, "bold")),
                sg.T(s=56, justification="l", key="-OUTPUT-")],
-              center([sg.B("Execute", s=b_side_b_size), sg.Exit(button_color="tomato", s=b_side_b_size)])]
+              [sg.T(s=l_side_t_size), sg.B("Combine", s=b_side_b_size, button_color=b_colour), sg.B("Split", s=b_side_b_size, button_color=b_colour),
+                    sg.Push(), sg.Exit(button_color=exit_b_colour, s=15)]]
 
     window_title = settings["GUI"]["title"]
-    window = sg.Window(window_title, layout, use_custom_titlebar=True, keep_on_top=False)
+    window = sg.Window(window_title, layout, use_custom_titlebar=False, keep_on_top=False)
 
     while True:
         event, values = window.read()
@@ -33,17 +32,30 @@ def main_window():
         if event in (sg.WINDOW_CLOSED, "Exit"):
             break
 
-        if event == "Execute":
+        if event == "Combine":
             if is_valid_path(input_path, window) and is_valid_path(output_path, window):
+                if csv is not False or xls is not False:
 
-                if values["-WS-"]:
-                    combine_and_convert_ws(input_path, csv, xls, output_path, window)
+                    if values["-WS-"]:
+                        combine_and_convert_ws(input_path, csv, xls, output_path, window)
 
-                elif values["-WB-"]:
-                    combine_workbooks(input_path, csv, xls, output_path, window)
+                    elif values["-WB-"]:
+                        name = sg.popup_get_text("New Workbook Name:", default_text="Workbook-Combined",
+                                                 no_titlebar=False, grab_anywhere=True,
+                                                 font=(font_family, font_size), size=(30, 5), button_color=b_colour)
 
-                elif values["-WB-"]:
-                    window["-OUTPUT-"].update("*** Function not yet implemented ***")
+                        if name is not None:
+                            combine_and_convert_wb(input_path, csv, xls, output_path, window, name)
+
+                        else:
+                            window["-OUTPUT-"].update("*** Missing Workbook Name ***")
+                            window.refresh()
+
+                    elif values["-CB-"]:
+                        window["-OUTPUT-"].update("*** Function Not Yet Implemented ***")
+                        window.refresh()
+                else:
+                    window["-OUTPUT-"].update("*** No Output File Type Selected ***")
                     window.refresh()
 
         time.sleep(1)
@@ -59,10 +71,15 @@ if __name__ == "__main__":
     theme = settings["GUI"]["theme"]
     font_family = settings["GUI"]["font_family"]
     font_size = int(settings["GUI"]["font_size"])
+    b_colour = settings["GUI"]["b_colour"]
+    exit_b_colour = settings["GUI"]["exit_b_colour"]
+
     r_side_b_size = int(settings["ELMS"]["r_side_b_size"])
     b_side_b_size = int(settings["ELMS"]["b_side_b_size"])
     l_side_t_size = int(settings["ELMS"]["l_side_t_size"])
+
     sg.theme(theme)
     sg.set_options(font=(font_family, font_size))
 
     main_window()
+

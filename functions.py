@@ -42,10 +42,10 @@ def combine_and_convert_ws(excel_file_path, csv, xls, output_folder, window):
     window.refresh()
 
 
-def combine_workbooks(excel_file_path, csv, xls, output_folder, window):
-    wb_list = excel_file_path.split(';')
-    new_name = sg.popup_get_text("Name of new Workbook:")
+def combine_and_convert_wb(excel_file_path, csv, xls, output_folder, window, name):
     final_df = pd.DataFrame()
+    wb_list = excel_file_path.split(';')
+
     for item in wb_list:
         window["-OUTPUT-"].update(f"*** Loading File {Path(item).stem} ***")
         window.refresh()
@@ -53,14 +53,14 @@ def combine_workbooks(excel_file_path, csv, xls, output_folder, window):
         final_df = final_df._append(df, ignore_index=True)
 
     if csv:
-        outfile = Path(output_folder) / f"{new_name}.csv"
-        window["-OUTPUT-"].update(f"*** Converting {new_name} to CSV ***")
+        outfile = Path(output_folder) / f"{name}.csv"
+        window["-OUTPUT-"].update(f"*** Converting {name} to CSV ***")
         window.refresh()
         final_df.to_csv(outfile, index=False)
 
     if xls:
-        outfile = Path(output_folder) / f"{new_name}.xlsx"
-        window["-OUTPUT-"].update(f"*** Converting {new_name} to XLSX ***")
+        outfile = Path(output_folder) / f"{name}.xlsx"
+        window["-OUTPUT-"].update(f"*** Converting {name} to XLSX ***")
         window.refresh()
         final_df.to_excel(outfile, index=False)
 
