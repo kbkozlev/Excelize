@@ -3,38 +3,32 @@ import pandas as pd
 from pathlib import Path
 
 
-def center(elms):
-    return [sg.Stretch(), *elms, sg.Stretch()]
-
-
-def border(elms):
-    return sg.Frame('', [[elms]])
-
-
-def is_valid_path(filepath, window):
-    wb_list = filepath.split(';')
-    for item in wb_list:
+def is_valid_path(in_list, window):
+    for item in in_list:
         if item and Path(item).exists():
             return True
         window["-OUTPUT-"].update("***Filepath not valid***")
         window.refresh()
 
 
-def combine_and_convert_ws(excel_file_path, csv, xls, output_folder, window):
-    ws_list = excel_file_path.split(';')
-    for item in ws_list:
-        window["-OUTPUT-"].update(f"*** Combining Worksheet from {Path(item).stem} ***")
+def split_wb(in_list, csv, xls, output_folder, window):
+    pass
+
+
+def combine_and_convert_ws(in_list, csv, xls, output_folder, window):
+    for item in in_list:
+        window["-OUTPUT-"].update(f"*** Combining Worksheets from {Path(item).stem} ***")
         window.refresh()
         df = pd.concat(pd.read_excel(item, sheet_name=None), ignore_index=True)
         filename = Path(item).stem + "_combined"
         if csv:
             outfile = Path(output_folder) / f"{filename}.csv"
-            window["-OUTPUT-"].update(f"*** Converting {Path(item).stem} to CSV ***")
+            window["-OUTPUT-"].update(f"*** Converting {filename} to CSV ***")
             window.refresh()
             df.to_csv(outfile, index=False)
         if xls:
             outfile = Path(output_folder) / f"{filename}.xlsx"
-            window["-OUTPUT-"].update(f"*** Converting {Path(item).stem} to XLSX ***")
+            window["-OUTPUT-"].update(f"*** Converting {filename} to XLSX ***")
             window.refresh()
             df.to_excel(outfile, index=False)
 
@@ -42,11 +36,10 @@ def combine_and_convert_ws(excel_file_path, csv, xls, output_folder, window):
     window.refresh()
 
 
-def combine_and_convert_wb(excel_file_path, csv, xls, output_folder, window, name):
+def combine_and_convert_wb(in_list, csv, xls, output_folder, window, name):
     final_df = pd.DataFrame()
-    wb_list = excel_file_path.split(';')
 
-    for item in wb_list:
+    for item in in_list:
         window["-OUTPUT-"].update(f"*** Loading File {Path(item).stem} ***")
         window.refresh()
         df = pd.read_excel(item)

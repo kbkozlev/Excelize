@@ -24,7 +24,7 @@ def main_window():
 
     while True:
         event, values = window.read()
-        input_path = values["-IN-"]
+        in_list = values["-IN-"].split(";")
         output_path = values["-OUT-"]
         csv = values['-CSV-']
         xls = values['-XLS-']
@@ -33,11 +33,12 @@ def main_window():
             break
 
         if event == "Combine":
-            if is_valid_path(input_path, window) and is_valid_path(output_path, window):
+
+            if is_valid_path(in_list, window) and is_valid_path(in_list, window):
                 if csv is not False or xls is not False:
 
                     if values["-WS-"]:
-                        combine_and_convert_ws(input_path, csv, xls, output_path, window)
+                        combine_and_convert_ws(in_list, csv, xls, output_path, window)
 
                     elif values["-WB-"]:
                         name = sg.popup_get_text("New Workbook Name:", default_text="Workbook-Combined",
@@ -45,7 +46,7 @@ def main_window():
                                                  font=(font_family, font_size), size=(30, 5), button_color=b_colour)
 
                         if name is not None:
-                            combine_and_convert_wb(input_path, csv, xls, output_path, window, name)
+                            combine_and_convert_wb(in_list, csv, xls, output_path, window, name)
 
                         else:
                             window["-OUTPUT-"].update("*** Missing Workbook Name ***")
@@ -57,6 +58,11 @@ def main_window():
                 else:
                     window["-OUTPUT-"].update("*** No Output File Type Selected ***")
                     window.refresh()
+
+        elif event == "Split":
+            if is_valid_path(in_list, window) and is_valid_path(in_list, window):
+                if csv is not False or xls is not False:
+                    pass
 
         time.sleep(1)
         window["-OUTPUT-"].update(" ")
