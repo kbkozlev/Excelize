@@ -12,7 +12,25 @@ def is_valid_path(in_list, window):
 
 
 def split_wb(in_list, csv, xls, output_folder, window):
-    pass
+    for item in in_list:
+        window["-OUTPUT-"].update(f"*** Splitting {Path(item).stem} into Worksheets ***")
+        window.refresh()
+        xl = pd.ExcelFile(item)
+        for filename in xl.sheet_names:
+            df = pd.read_excel(xl, sheet_name=filename)
+            if csv:
+                outfile = Path(output_folder) / f"{filename}.csv"
+                window["-OUTPUT-"].update(f"*** Converting {filename} to CSV ***")
+                window.refresh()
+                df.to_csv(outfile, index=False)
+            if xls:
+                outfile = Path(output_folder) / f"{filename}.xlsx"
+                window["-OUTPUT-"].update(f"*** Converting {filename} to XLSX ***")
+                window.refresh()
+                df.to_excel(outfile, index=False)
+
+    window["-OUTPUT-"].update("*** Done ***")
+    window.refresh()
 
 
 def combine_and_convert_ws(in_list, csv, xls, output_folder, window):
