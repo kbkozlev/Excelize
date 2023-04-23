@@ -1,6 +1,6 @@
 <div align='center'>
      
-<img src="https://github.com/kbkozlev/Excelize/blob/master/.github/Excelize.png" alt="logo" width="200" height="200"><br/>
+<img src="https://github.com/kbkozlev/Excelize/blob/master/.github/Excelize.png" alt="logo"><br/>
 
 <a href="https://github.com/kbkozlev/PyBATins/blob/master/LICENSE.md" alt="License">
   <img src="https://img.shields.io/github/license/kbkozlev/PyBATins?color=blue&style=for-the-badge" />
