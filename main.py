@@ -82,6 +82,7 @@ def main_window():
         window["-OUTPUT-"].update(" ")
 
 
+
 if __name__ == "__main__":
     SETTINGS_PATH = Path.cwd()
     # create the settings object and use ini format

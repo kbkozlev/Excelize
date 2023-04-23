@@ -2,6 +2,7 @@ import pandas as pd
 from pathlib import Path
 
 
+
 def is_valid_path(in_list, window):
     for item in in_list:
         if item and Path(item).exists():
