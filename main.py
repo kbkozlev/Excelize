@@ -23,12 +23,13 @@ def main_window():
                sg.B("Split", s=b_side_b_size, button_color=b_colour),
                sg.Push(), sg.Exit(button_color=exit_b_colour, s=15)]]
 
-    window = sg.Window(window_title, layout, use_custom_titlebar=False, keep_on_top=False)
+    window = sg.Window(window_title, layout, use_custom_titlebar=False, keep_on_top=False, icon=icon)
 
     while True:
         event, values = window.read()
         in_list = values["-IN-"].split(";")
         output_path = values["-OUT-"]
+        out_list = output_path.split(";")
         csv = values['-CSV-']
         xls = values['-XLS-']
 
@@ -40,11 +41,11 @@ def main_window():
                      "\nCreated by Kaloian Kozlev"
                      "\nGithub: https://github.com/kbkozlev/Excel_Combine_Convert"
                      "\nLicense:",
-                     keep_on_top=True, line_width=60)
+                     keep_on_top=True, line_width=60, icon=icon)
 
         if event == "Combine":
 
-            if is_valid_path(in_list, window) and is_valid_path(in_list, window):
+            if is_valid_path(in_list, window) and is_valid_path(out_list, window):
                 if csv is not False or xls is not False:
 
                     if values["-WS-"]:
@@ -53,7 +54,7 @@ def main_window():
                     elif values["-WB-"]:
                         name = sg.popup_get_text("New Workbook Name:", default_text="Workbook-Combined",
                                                  no_titlebar=False, grab_anywhere=True,
-                                                 font=(font_family, font_size), size=(30, 5), button_color=b_colour)
+                                                 font=(font_family, font_size), size=(30, 5), button_color=b_colour, icon=icon)
 
                         if name is not None:
                             combine_and_convert_wb(in_list, csv, xls, output_path, window, name)
@@ -67,7 +68,7 @@ def main_window():
                     window.refresh()
 
         elif event == "Split":
-            if is_valid_path(in_list, window) and is_valid_path(in_list, window):
+            if is_valid_path(in_list, window) and is_valid_path(out_list, window):
                 if csv is not False or xls is not False:
 
                     split_wb(in_list, csv, xls, output_path, window)
@@ -92,6 +93,7 @@ if __name__ == "__main__":
     font_size = int(settings["GUI"]["font_size"])
     b_colour = settings["GUI"]["b_colour"]
     exit_b_colour = settings["GUI"]["exit_b_colour"]
+    icon = settings["GUI"]["icon"]
 
     r_side_b_size = int(settings["ELMS"]["r_side_b_size"])
     b_side_b_size = int(settings["ELMS"]["b_side_b_size"])
