@@ -1,13 +1,13 @@
 <div align='center'>
      
-<img src="https://github.com/kbkozlev/Excelize/blob/master/.github/Excelize.png" alt="logo"><br/>
+<img src="https://github.com/kbkozlev/Excelize/blob/master/.github/Excelize1.png" alt="logo" width="540" height="211"><br/>
 
-<a href="https://github.com/kbkozlev/PyBATins/blob/master/LICENSE.md" alt="License">
-  <img src="https://img.shields.io/github/license/kbkozlev/PyBATins?color=blue&style=for-the-badge" />
+<a href="ttps://github.com/kbkozlev/Excelize/blob/master/LICENSE.md" alt="License">
+  <img src="https://img.shields.io/github/license/kbkozlev/Excelize?color=blue&style=for-the-badge" />
 </a>
 
-<a href="https://github.com/kbkozlev/PyBATins/releases" alt="GitHub release">
-  <img src="https://img.shields.io/github/v/release/kbkozlev/PyBATins?color=blue&style=for-the-badge" />
+<a href="https://github.com/kbkozlev/Excelize/releases" alt="GitHub release">
+  <img src="https://img.shields.io/github/v/release/kbkozlev/Excelize?color=blue&style=for-the-badge" />
 </a>
      
 </div>
