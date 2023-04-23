@@ -1,3 +1,4 @@
+import PySimpleGUI as sg
 from functions import *
 import time
 
@@ -41,7 +42,7 @@ def main_window():
                      "\nCreated by Kaloian Kozlev"
                      "\nGithub: https://github.com/kbkozlev/Excel_Combine_Convert"
                      "\nLicense:",
-                     keep_on_top=True, line_width=60, icon=icon)
+                     keep_on_top=True, line_width=60, icon=icon, font=(font_family, font_size))
 
         if event == "Combine":
 

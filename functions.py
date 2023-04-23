@@ -1,4 +1,3 @@
-import PySimpleGUI as sg
 import pandas as pd
 from pathlib import Path
 
