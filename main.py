@@ -1,3 +1,5 @@
+#Created by Kaloian Kozlev
+
 import PySimpleGUI as sg
 from functions import *
 import time
