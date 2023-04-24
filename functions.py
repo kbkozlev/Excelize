@@ -10,23 +10,32 @@ def is_valid_path(in_list, window):
         window.refresh()
 
 
+def convert_to_csv(output_folder, name, window, df):
+    outfile = Path(output_folder) / f"{name}.csv"
+    window["-OUTPUT-"].update(f"*** Converting {name} to CSV ***")
+    window.refresh()
+    df.to_csv(outfile, index=False)
+
+
+def convert_to_xls(output_folder, name, window, df):
+    outfile = Path(output_folder) / f"{name}.xlsx"
+    window["-OUTPUT-"].update(f"*** Converting {name} to XLSX ***")
+    window.refresh()
+    df.to_excel(outfile, index=False)
+
+
 def split_wb(in_list, csv, xls, output_folder, window):
     for item in in_list:
         window["-OUTPUT-"].update(f"*** Splitting {Path(item).stem} into Worksheets ***")
         window.refresh()
         xl = pd.ExcelFile(item)
-        for filename in xl.sheet_names:
-            df = pd.read_excel(xl, sheet_name=filename)
+        for name in xl.sheet_names:
+            df = pd.read_excel(xl, sheet_name=name)
+
             if csv:
-                outfile = Path(output_folder) / f"{filename}.csv"
-                window["-OUTPUT-"].update(f"*** Converting {filename} to CSV ***")
-                window.refresh()
-                df.to_csv(outfile, index=False)
+                convert_to_csv(output_folder, name, window, df)
             if xls:
-                outfile = Path(output_folder) / f"{filename}.xlsx"
-                window["-OUTPUT-"].update(f"*** Converting {filename} to XLSX ***")
-                window.refresh()
-                df.to_excel(outfile, index=False)
+                convert_to_xls(output_folder, name, window, df)
 
     window["-OUTPUT-"].update("*** Done ***")
     window.refresh()
@@ -37,17 +46,12 @@ def combine_and_convert_ws(in_list, csv, xls, output_folder, window):
         window["-OUTPUT-"].update(f"*** Combining Worksheets from {Path(item).stem} ***")
         window.refresh()
         df = pd.concat(pd.read_excel(item, sheet_name=None), ignore_index=True)
-        filename = Path(item).stem + "_combined"
+        name = Path(item).stem + "_combined"
+
         if csv:
-            outfile = Path(output_folder) / f"{filename}.csv"
-            window["-OUTPUT-"].update(f"*** Converting {filename} to CSV ***")
-            window.refresh()
-            df.to_csv(outfile, index=False)
+            convert_to_csv(output_folder, name, window, df)
         if xls:
-            outfile = Path(output_folder) / f"{filename}.xlsx"
-            window["-OUTPUT-"].update(f"*** Converting {filename} to XLSX ***")
-            window.refresh()
-            df.to_excel(outfile, index=False)
+            convert_to_xls(output_folder, name, window, df)
 
     window["-OUTPUT-"].update("*** Done ***")
     window.refresh()
@@ -62,18 +66,12 @@ def combine_and_convert_wb(in_list, csv, xls, output_folder, window, name):
         df = pd.read_excel(item)
         final_df = final_df._append(df, ignore_index=True)
 
-    if csv:
-        outfile = Path(output_folder) / f"{name}.csv"
-        window["-OUTPUT-"].update(f"*** Converting {name} to CSV ***")
-        window.refresh()
-        final_df.to_csv(outfile, index=False)
-
-    if xls:
-        outfile = Path(output_folder) / f"{name}.xlsx"
-        window["-OUTPUT-"].update(f"*** Converting {name} to XLSX ***")
-        window.refresh()
-        final_df.to_excel(outfile, index=False)
+        if csv:
+            convert_to_csv(output_folder, name, window, final_df)
+        if xls:
+            convert_to_xls(output_folder, name, window, final_df)
 
     window["-OUTPUT-"].update("*** Done ***")
     window.refresh()
+
 
