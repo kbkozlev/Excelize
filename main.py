@@ -1,4 +1,4 @@
-#Created by Kaloian Kozlev
+# Created by Kaloian Kozlev
 
 import PySimpleGUI as sg
 from functions import *
@@ -9,10 +9,10 @@ def main_window():
     menu_bar = [['Help', 'About']]
 
     layout = [[sg.Menubar(menu_bar)],
-              [sg.T("Input File(s):", s=l_side_t_size, justification="r"), sg.I(key="-IN-"),
+              [sg.T("Input File(s):", s=l_side_t_size, justification="r"), sg.I(key="-IN-", default_text="Enter Input File", text_color="grey"),
                sg.FilesBrowse(file_types=(("Excel Files", "*.xls*"), ("All Files", "*.*")), s=r_side_b_size,
                               button_color=b_colour)],
-              [sg.T("Output Folder:", s=l_side_t_size, justification="r"), sg.I(key="-OUT-"),
+              [sg.T("Output Folder:", s=l_side_t_size, justification="r"), sg.I(key="-OUT-", default_text="Enter Output Folder", text_color="grey"),
                sg.FolderBrowse(s=r_side_b_size, button_color=b_colour)],
               [sg.T("Input File Type:", s=l_side_t_size, justification="r"),
                sg.Radio("Worksheet", "dType", default=True, key="-WS-"),
@@ -30,14 +30,14 @@ def main_window():
 
     while True:
         event, values = window.read()
-        in_list = values["-IN-"].split(";")
-        output_path = values["-OUT-"]
-        out_list = output_path.split(";")
-        csv = values['-CSV-']
-        xls = values['-XLS-']
 
         if event in (sg.WINDOW_CLOSED, "Exit"):
             break
+
+        in_list = values["-IN-"].split(";")
+        output_path = values["-OUT-"]
+        csv = values['-CSV-']
+        xls = values['-XLS-']
 
         if event == "About":
             sg.popup(str(window_title),
@@ -48,7 +48,7 @@ def main_window():
 
         if event == "Combine":
 
-            if is_valid_path(in_list, window) and is_valid_path(out_list, window):
+            if is_valid_path(in_list, window) and is_valid_path(output_path, window):
                 if csv is not False or xls is not False:
 
                     if values["-WS-"]:
@@ -71,7 +71,7 @@ def main_window():
                     window.refresh()
 
         elif event == "Split":
-            if is_valid_path(in_list, window) and is_valid_path(out_list, window):
+            if is_valid_path(in_list, window) and is_valid_path(output_path, window):
                 if csv is not False or xls is not False:
 
                     split_wb(in_list, csv, xls, output_path, window)
@@ -85,24 +85,19 @@ def main_window():
 
 
 if __name__ == "__main__":
-    SETTINGS_PATH = Path.cwd()
-    # create the settings object and use ini format
-    settings = sg.UserSettings(
-        path=str(SETTINGS_PATH), filename="config.ini", use_config_file=True, convert_bools_and_none=True
-    )
-    window_title = settings["GUI"]["title"]
-    theme = settings["GUI"]["theme"]
-    font_family = settings["GUI"]["font_family"]
-    font_size = int(settings["GUI"]["font_size"])
-    b_colour = settings["GUI"]["b_colour"]
-    exit_b_colour = settings["GUI"]["exit_b_colour"]
-    icon = settings["GUI"]["icon"]
 
-    r_side_b_size = int(settings["ELMS"]["r_side_b_size"])
-    b_side_b_size = int(settings["ELMS"]["b_side_b_size"])
-    l_side_t_size = int(settings["ELMS"]["l_side_t_size"])
+    window_title = "Excelize v.1.0"
+    font_family = "Arial"
+    font_size = 10
+    b_colour = "#015FB8"
+    exit_b_colour = "#D44A5A"
+    icon = "icon.ico"
 
-    sg.theme(theme)
+    b_side_b_size = 16
+    r_side_b_size = 15
+    l_side_t_size = 15
+
+    sg.theme("Reddit")
     sg.set_options(font=(font_family, font_size))
 
     main_window()
