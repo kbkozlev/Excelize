@@ -5,14 +5,30 @@ from functions import *
 import time
 
 
+def about_window():
+    layout = [[sg.T(str(window_title), font=(font_family, 12, "bold"))],
+              [sg.T("GitHub: https://github.com/kbkozlev/Excelize")],
+              [sg.T("License: Apache-2.0")],
+              [sg.T("Copyright © 2023 Kaloian Kozlev")]]
+    window = sg.Window("About", layout, modal=True, icon=icon, size=(300, 120))
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+
+    window.close()
+
+
 def main_window():
     menu_bar = [['Help', 'About']]
 
     layout = [[sg.Menubar(menu_bar)],
-              [sg.T("Input File(s):", s=l_side_t_size, justification="r"), sg.I(key="-IN-", default_text="Enter Input File", text_color="grey"),
+              [sg.T("Input File(s):", s=l_side_t_size, justification="r"),
+               sg.I(key="-IN-", default_text="Select Input File(s)", text_color="grey"),
                sg.FilesBrowse(file_types=(("Excel Files", "*.xls*"), ("All Files", "*.*")), s=r_side_b_size,
                               button_color=b_colour)],
-              [sg.T("Output Folder:", s=l_side_t_size, justification="r"), sg.I(key="-OUT-", default_text="Enter Output Folder", text_color="grey"),
+              [sg.T("Output Folder:", s=l_side_t_size, justification="r"),
+               sg.I(key="-OUT-", default_text="Select Output Folder", text_color="grey"),
                sg.FolderBrowse(s=r_side_b_size, button_color=b_colour)],
               [sg.T("Input File Type:", s=l_side_t_size, justification="r"),
                sg.Radio("Worksheet", "dType", default=True, key="-WS-"),
@@ -40,11 +56,7 @@ def main_window():
         xls = values['-XLS-']
 
         if event == "About":
-            sg.popup(str(window_title),
-                     "\nCreated by Kaloian Kozlev"
-                     "\nGithub: https://github.com/kbkozlev/Excel_Combine_Convert"
-                     "\nLicense:",
-                     keep_on_top=True, line_width=60, icon=icon, font=(font_family, font_size))
+            about_window()
 
         if event == "Combine":
 
@@ -57,7 +69,8 @@ def main_window():
                     elif values["-WB-"]:
                         name = sg.popup_get_text("New Workbook Name:", default_text="Workbook-Combined",
                                                  no_titlebar=False, grab_anywhere=True,
-                                                 font=(font_family, font_size), size=(30, 5), button_color=b_colour, icon=icon)
+                                                 font=(font_family, font_size), size=(30, 5), button_color=b_colour,
+                                                 icon=icon)
 
                         if name is not None:
                             combine_and_convert_wb(in_list, csv, xls, output_path, window, name)
@@ -85,7 +98,6 @@ def main_window():
 
 
 if __name__ == "__main__":
-
     window_title = "Excelize v.1.0"
     font_family = "Arial"
     font_size = 10
