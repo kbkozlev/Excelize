@@ -3,8 +3,13 @@
 import PySimpleGUI as sg
 from functions import *
 import time
-from ctypes import windll
-windll.shcore.SetProcessDpiAwareness(1)
+import ctypes
+import platform
+
+
+def make_dpi_aware():
+    if int(platform.release()) >= 8:
+        ctypes.windll.shcore.SetProcessDpiAwareness(True)
 
 
 def about_window():
@@ -115,3 +120,4 @@ if __name__ == "__main__":
     sg.set_options(font=(font_family, font_size))
 
     main_window()
+    make_dpi_aware()
