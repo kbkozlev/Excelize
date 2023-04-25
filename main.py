@@ -1,15 +1,6 @@
-# Created by Kaloian Kozlev
-
 import PySimpleGUI as sg
 from functions import *
 import time
-import ctypes
-import platform
-
-
-def make_dpi_aware():
-    if int(platform.release()) >= 8:
-        ctypes.windll.shcore.SetProcessDpiAwareness(True)
 
 
 def about_window():
@@ -22,8 +13,6 @@ def about_window():
         event, values = window.read()
         if event == sg.WIN_CLOSED:
             break
-
-    window.close()
 
 
 def main_window():

@@ -1,5 +1,12 @@
 import pandas as pd
 from pathlib import Path
+import ctypes
+import platform
+
+
+def make_dpi_aware():
+    if int(platform.release()) >= 8:
+        ctypes.windll.shcore.SetProcessDpiAwareness(True)
 
 
 def is_valid_path(in_list, window):
