@@ -3,6 +3,8 @@
 import PySimpleGUI as sg
 from functions import *
 import time
+from ctypes import windll
+windll.shcore.SetProcessDpiAwareness(1)
 
 
 def about_window():
@@ -10,7 +12,7 @@ def about_window():
               [sg.T("GitHub: https://github.com/kbkozlev/Excelize")],
               [sg.T("License: Apache-2.0")],
               [sg.T("Copyright © 2023 Kaloian Kozlev")]]
-    window = sg.Window("About", layout, modal=True, icon=icon, size=(300, 120))
+    window = sg.Window("About", layout, modal=True, icon=icon, size=(400, 150))
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED:
@@ -36,7 +38,7 @@ def main_window():
               [sg.T("Output File Type(s):", s=l_side_t_size, justification="r"),
                sg.Checkbox(".csv", default=True, key="-CSV-"),
                sg.Checkbox(".xlsx", key="-XLS-")],
-              [sg.T("Exec. Status:", s=l_side_t_size, justification="r", font=(font_family, font_size, "bold")),
+              [sg.T("Exec. Status:", s=l_side_t_size, justification="r", font=(font_family, font_size)),
                sg.T(s=56, justification="l", key="-OUTPUT-")],
               [sg.T(s=l_side_t_size), sg.B("Combine", s=b_side_b_size, button_color=b_colour),
                sg.B("Split", s=b_side_b_size, button_color=b_colour),
@@ -107,7 +109,7 @@ if __name__ == "__main__":
 
     b_side_b_size = 16
     r_side_b_size = 15
-    l_side_t_size = 15
+    l_side_t_size = 16
 
     sg.theme("Reddit")
     sg.set_options(font=(font_family, font_size))
