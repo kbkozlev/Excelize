@@ -2,6 +2,7 @@ import pandas as pd
 from pathlib import Path
 import ctypes
 import platform
+import requests
 
 
 def make_dpi_aware():
@@ -15,6 +16,15 @@ def is_valid_path(in_list, window):
             return True
         window["-OUTPUT-"].update("*** Filepath not valid ***")
         window.refresh()
+
+
+def check_for_update(tag):
+    response = requests.get("https://api.github.com/repos/kbkozlev/Excelize/releases/latest")
+    latest = float(response.json()['tag_name'])
+    if float(tag) < latest:
+        print("New version available")
+    else:
+        print("You have the latest version")
 
 
 def convert_to_csv(output_folder, name, window, df):

@@ -16,7 +16,7 @@ def about_window():
 
 
 def main_window():
-    menu_bar = [['Help', 'About']]
+    menu_bar = [['Help', ['About', 'Check for Updates',]]]
 
     layout = [[sg.Menubar(menu_bar)],
               [sg.T("Input File(s):", s=l_side_t_size, justification="r"),
@@ -94,7 +94,8 @@ def main_window():
 
 
 if __name__ == "__main__":
-    window_title = "Excelize v.1.0"
+    tag = '1.0'
+    window_title = f"Excelize v{tag}"
     font_family = "Arial"
     font_size = 10
     b_colour = "#015FB8"
@@ -108,5 +109,6 @@ if __name__ == "__main__":
     sg.theme("Reddit")
     sg.set_options(font=(font_family, font_size))
 
+    check_for_update(tag)
     main_window()
     make_dpi_aware()
