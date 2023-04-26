@@ -15,3 +15,13 @@
 # Excelize
 Excelize is a small app that will allow users to easily manipulate Excel files, by merging, converting and splitting them as needed. 
 It support multiple file selection with the aim to simplify the process.
+
+# How to use
+Prerequisites: All files must have same header.
+
+1. Select one or multiple files of the same type.
+2. Select output folder
+3. Select input file type 
+4. If you select worksheets you can combine them in a single file, or you can split the original file into seperate files where each worksheet is a workbook.
+   IF you select workbooks you can combine multiple workbooks into a single file.
+5. The output files can be converted to either xlsx or csv, or both if both checkboxes are selected.
