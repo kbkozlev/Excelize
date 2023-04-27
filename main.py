@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 from functions import *
 import time
+import webbrowser
 
 
 def about_window():
@@ -8,15 +9,40 @@ def about_window():
               [sg.T("GitHub: https://github.com/kbkozlev/Excelize")],
               [sg.T("License: Apache-2.0")],
               [sg.T("Copyright © 2023 Kaloian Kozlev")]]
-    window = sg.Window("About", layout, modal=True, icon=icon, size=(400, 150))
+    window = sg.Window("About", layout, modal=True, icon=icon, size=(400, 130))
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED:
             break
 
 
+def updates_window(ver):
+    latest, down_url = get_latest_version()
+    layout = [[sg.Push(), sg.T('Version Info', font=(font_family, 12, 'bold')), sg.Push()],
+              [sg.T(f'Current Version: {ver}'), sg.T(f'Latest Version: {latest}')],
+              [sg.T(s=40, justification="c", key="-INFO-")],
+              [sg.Push(), sg.B('Download', key='down', button_color=b_colour), sg.Push()]]
+
+    window = sg.Window("Check for Updates", layout, modal=True, icon=icon, size=(300, 120))
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+
+        if float(latest) > float(ver):
+            if event == 'down':
+                webbrowser.open(down_url)
+
+        else:
+            window['-INFO-'].update("You have the latest version")
+
+        window.refresh()
+        time.sleep(1)
+        window["-INFO-"].update(" ")
+
+
 def main_window():
-    menu_bar = [['Help', ['About', 'Check for Updates',]]]
+    menu_bar = [['Help', ['About', 'Check for Updates']]]
 
     layout = [[sg.Menubar(menu_bar)],
               [sg.T("Input File(s):", s=l_side_t_size, justification="r"),
@@ -53,6 +79,9 @@ def main_window():
 
         if event == "About":
             about_window()
+
+        elif event == "Check for Updates":
+            updates_window(ver)
 
         if event == "Combine":
 
@@ -94,8 +123,8 @@ def main_window():
 
 
 if __name__ == "__main__":
-    tag = '1.0'
-    window_title = f"Excelize v{tag}"
+    ver = '1.1'
+    window_title = f"Excelize v{ver}"
     font_family = "Arial"
     font_size = 10
     b_colour = "#015FB8"
@@ -109,6 +138,5 @@ if __name__ == "__main__":
     sg.theme("Reddit")
     sg.set_options(font=(font_family, font_size))
 
-    check_for_update(tag)
     main_window()
     make_dpi_aware()

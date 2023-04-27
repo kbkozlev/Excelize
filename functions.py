@@ -18,13 +18,11 @@ def is_valid_path(in_list, window):
         window.refresh()
 
 
-def check_for_update(tag):
+def get_latest_version():
     response = requests.get("https://api.github.com/repos/kbkozlev/Excelize/releases/latest")
     latest = float(response.json()['tag_name'])
-    if float(tag) < latest:
-        print("New version available")
-    else:
-        print("You have the latest version")
+    down_url = response.json()['html_url']
+    return latest, down_url
 
 
 def convert_to_csv(output_folder, name, window, df):
