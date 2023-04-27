@@ -5,21 +5,25 @@ import webbrowser
 
 
 def about_window():
-    layout = [[sg.T(str(window_title), font=(font_family, 12, "bold"))],
-              [sg.T("GitHub: https://github.com/kbkozlev/Excelize")],
-              [sg.T("License: Apache-2.0")],
+    layout = [[sg.Push(), sg.T(str(window_title), font=(font_family, 12, "bold")), sg.Push()],
+              [sg.T("GitHub:", s=6), sg.T(github_url, enable_events=True, font=(font_family, font_size, 'underline'), justification='l')],
+              [sg.T("License:", s=6), sg.T("Apache-2.0", justification='l')],
               [sg.T("Copyright © 2023 Kaloian Kozlev")]]
-    window = sg.Window("About", layout, modal=True, icon=icon, size=(400, 130))
+    window = sg.Window("About", layout, modal=True, icon=icon, size=(320, 130))
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED:
             break
 
+        if event:
+            webbrowser.open(github_url)
+            window.close()
+
 
 def updates_window(ver):
     latest, down_url = get_latest_version()
     layout = [[sg.Push(), sg.T('Version Info', font=(font_family, 12, 'bold')), sg.Push()],
-              [sg.T(f'Current Version: {ver}'), sg.T(f'Latest Version: {latest}')],
+              [sg.Push(), sg.T(f'Current Version: {ver}'), sg.T(f'Latest Version: {latest}'), sg.Push()],
               [sg.T(s=40, justification="c", key="-INFO-")],
               [sg.Push(), sg.B('Download', key='down', button_color=b_colour), sg.Push()]]
 
@@ -32,6 +36,7 @@ def updates_window(ver):
         if float(latest) > float(ver):
             if event == 'down':
                 webbrowser.open(down_url)
+                window.close()
 
         else:
             window['-INFO-'].update("You have the latest version")
@@ -137,6 +142,8 @@ if __name__ == "__main__":
 
     sg.theme("Reddit")
     sg.set_options(font=(font_family, font_size))
+
+    github_url = 'https://github.com/kbkozlev/Excelize'
 
     main_window()
     make_dpi_aware()

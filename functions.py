@@ -14,8 +14,9 @@ def is_valid_path(in_list, window):
     for item in in_list:
         if item and Path(item).exists():
             return True
-        window["-OUTPUT-"].update("*** Filepath not valid ***")
-        window.refresh()
+        else:
+            window["-OUTPUT-"].update("*** Filepath not valid ***")
+            window.refresh()
 
 
 def get_latest_version():
