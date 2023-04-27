@@ -3,6 +3,7 @@ from pathlib import Path
 import ctypes
 import platform
 import requests
+import xlrd
 
 
 def make_dpi_aware():

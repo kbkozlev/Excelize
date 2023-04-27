@@ -9,7 +9,8 @@ def about_window():
               [sg.T("GitHub:", s=6), sg.T(github_url, enable_events=True, font=(font_family, font_size, 'underline'), justification='l')],
               [sg.T("License:", s=6), sg.T("Apache-2.0", justification='l')],
               [sg.T("Copyright © 2023 Kaloian Kozlev")]]
-    window = sg.Window("About", layout, modal=True, icon=icon, size=(320, 130))
+
+    window = sg.Window("About", layout, icon=icon, size=(320, 130))
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED:
@@ -27,16 +28,15 @@ def updates_window(ver):
               [sg.T(s=40, justification="c", key="-INFO-")],
               [sg.Push(), sg.B('Download', key='down', button_color=b_colour), sg.Push()]]
 
-    window = sg.Window("Check for Updates", layout, modal=True, icon=icon, size=(300, 120))
+    window = sg.Window("Check for Updates", layout, icon=icon, size=(300, 120))
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED:
             break
 
-        if float(latest) > float(ver):
-            if event == 'down':
-                webbrowser.open(down_url)
-                window.close()
+        if float(latest) > float(ver) and event == 'down':
+            webbrowser.open(down_url)
+            window.close()
 
         else:
             window['-INFO-'].update("You have the latest version")
@@ -69,7 +69,7 @@ def main_window():
                sg.B("Split", s=b_side_b_size, button_color=b_colour),
                sg.Push(), sg.Exit(button_color=exit_b_colour, s=15)]]
 
-    window = sg.Window(window_title, layout, use_custom_titlebar=False, keep_on_top=False, icon=icon)
+    window = sg.Window(window_title, layout, icon=icon)
 
     while True:
         event, values = window.read()
@@ -141,7 +141,7 @@ if __name__ == "__main__":
     l_side_t_size = 15
 
     sg.theme("Reddit")
-    sg.set_options(font=(font_family, font_size))
+    sg.set_options(font=(font_family, font_size), force_modal_windows=True)
 
     github_url = 'https://github.com/kbkozlev/Excelize'
 
