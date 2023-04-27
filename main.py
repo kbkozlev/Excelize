@@ -133,7 +133,7 @@ if __name__ == "__main__":
 
     b_side_b_size = 16
     r_side_b_size = 15
-    l_side_t_size = 16
+    l_side_t_size = 15
 
     sg.theme("Reddit")
     sg.set_options(font=(font_family, font_size))
