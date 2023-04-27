@@ -21,25 +21,34 @@ def about_window():
             window.close()
 
 
-def updates_window(ver):
-    latest, down_url = get_latest_version()
+def updates_window(current_release):
+    latest_release, download_url = get_latest_version()
     layout = [[sg.Push(), sg.T('Version Info', font=(font_family, 12, 'bold')), sg.Push()],
-              [sg.Push(), sg.T(f'Current Version: {ver}'), sg.T(f'Latest Version: {latest}'), sg.Push()],
+              [sg.Push(), sg.T(f'Current Version: {current_release}'), sg.T(f'Latest Version: {latest_release}'), sg.Push()],
               [sg.T(s=40, justification="c", key="-INFO-")],
               [sg.Push(), sg.B('Download', key='down', button_color=b_colour), sg.Push()]]
 
     window = sg.Window("Check for Updates", layout, icon=icon, size=(300, 120))
+
+    if latest_release is not None:
+        current_release = current_release.replace(".", "")
+        latest_release = latest_release.replace(".", "")
+
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED:
             break
 
-        if float(latest) > float(ver) and event == 'down':
-            webbrowser.open(down_url)
-            window.close()
+        if event == "down":
+            if latest_release is None:
+                window['-INFO-'].update("No internet connection")
 
-        else:
-            window['-INFO-'].update("You have the latest version")
+            elif int(latest_release) > int(current_release):
+                webbrowser.open(download_url)
+                window.close()
+
+            else:
+                window['-INFO-'].update("You have the latest version")
 
         window.refresh()
         time.sleep(1)
@@ -128,7 +137,7 @@ def main_window():
 
 
 if __name__ == "__main__":
-    release = '1.1'
+    release = '1.2'
     window_title = f"Excelize v{release}"
     font_family = "Arial"
     font_size = 10
