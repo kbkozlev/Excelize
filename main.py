@@ -81,7 +81,7 @@ def main_window():
             about_window()
 
         elif event == "Check for Updates":
-            updates_window(ver)
+            updates_window(release)
 
         if event == "Combine":
 
@@ -123,8 +123,8 @@ def main_window():
 
 
 if __name__ == "__main__":
-    ver = '1.1'
-    window_title = f"Excelize v{ver}"
+    release = '1.1'
+    window_title = f"Excelize v{release}"
     font_family = "Arial"
     font_size = 10
     b_colour = "#015FB8"
