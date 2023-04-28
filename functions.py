@@ -1,9 +1,6 @@
 import pandas as pd
 from pathlib import Path
-import ctypes
-import platform
 import requests
-
 
 
 def is_valid_path(in_list, window):
