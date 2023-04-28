@@ -10,7 +10,7 @@ def about_window():
               [sg.T("License:", s=6), sg.T("Apache-2.0", justification='l')],
               [sg.T("Copyright © 2023 Kaloian Kozlev")]]
 
-    window = sg.Window("About", layout, icon=icon, size=(320, 130))
+    window = sg.Window("About", layout, icon=icon, size=(380, 150))
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED:
@@ -28,7 +28,7 @@ def updates_window(current_release):
               [sg.T(s=40, justification="c", key="-INFO-")],
               [sg.Push(), sg.B('Download', key='down', button_color=b_colour), sg.Push()]]
 
-    window = sg.Window("Check for Updates", layout, icon=icon, size=(300, 120))
+    window = sg.Window("Check for Updates", layout, icon=icon, size=(380, 150))
 
     if latest_release is not None:
         current_release = current_release.replace(".", "")
@@ -78,7 +78,7 @@ def main_window():
                sg.B("Split", s=b_side_b_size, button_color=b_colour),
                sg.Push(), sg.Exit(button_color=exit_b_colour, s=15)]]
 
-    window = sg.Window(window_title, layout, icon=icon)
+    window = sg.Window(window_title, layout, icon=icon, )
 
     while True:
         event, values = window.read()
@@ -146,13 +146,13 @@ if __name__ == "__main__":
     icon = "icon.ico"
 
     b_side_b_size = 16
-    r_side_b_size = 15
-    l_side_t_size = 15
+    r_side_b_size = 16
+    l_side_t_size = 16
 
     sg.theme("Reddit")
-    sg.set_options(font=(font_family, font_size), force_modal_windows=True)
+    sg.set_options(font=(font_family, font_size), force_modal_windows=True, dpi_awareness=True)
 
     github_url = 'https://github.com/kbkozlev/Excelize'
 
     main_window()
-    make_dpi_aware()
+

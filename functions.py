@@ -5,10 +5,6 @@ import platform
 import requests
 
 
-def make_dpi_aware():
-    if int(platform.release()) >= 8:
-        ctypes.windll.shcore.SetProcessDpiAwareness(True)
-
 
 def is_valid_path(in_list, window):
     for item in in_list:
