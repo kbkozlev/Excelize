@@ -97,7 +97,7 @@ def main_window():
         elif event == "Check for Updates":
             updates_window(release)
 
-        if event == "Combine":
+        elif event == "Combine":
 
             if is_valid_path(in_list, window) and is_valid_path(output_path, window):
                 if csv is not False or xls is not False:
