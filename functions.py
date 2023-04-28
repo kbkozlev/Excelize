@@ -18,7 +18,7 @@ def get_latest_version():
         latest_release = response.json()['tag_name']
         download_url = response.json()['html_url']
 
-    except ConnectionError:
+    except:
         latest_release = None
         download_url = None
 
