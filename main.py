@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from functions import *
+import functions as fn
 import time
 import webbrowser
 
@@ -22,7 +22,7 @@ def about_window():
 
 
 def updates_window(current_release):
-    latest_release, download_url = get_latest_version()
+    latest_release, download_url = fn.get_latest_version()
     layout = [[sg.Push(), sg.T('Version Info', font=(font_family, 12, 'bold')), sg.Push()],
               [sg.Push(), sg.T(f'Current Version: {current_release}'), sg.T(f'Latest Version: {latest_release}'), sg.Push()],
               [sg.T(s=40, justification="c", key="-INFO-")],
@@ -99,11 +99,11 @@ def main_window():
 
         elif event == "Combine":
 
-            if is_valid_path(in_list, window) and is_valid_path(output_path, window):
+            if fn.is_valid_path(in_list, window) and fn.is_valid_path(output_path, window):
                 if csv is not False or xls is not False:
 
                     if values["-WS-"]:
-                        combine_and_convert_ws(in_list, csv, xls, output_path, window)
+                        fn.combine_and_convert_ws(in_list, csv, xls, output_path, window)
 
                     elif values["-WB-"]:
                         name = sg.popup_get_text("New Workbook Name:", default_text="Workbook-Combined",
@@ -112,7 +112,7 @@ def main_window():
                                                  icon=icon)
 
                         if name is not None:
-                            combine_and_convert_wb(in_list, csv, xls, output_path, window, name)
+                            fn.combine_and_convert_wb(in_list, csv, xls, output_path, window, name)
 
                         else:
                             window["-OUTPUT-"].update("*** Missing Workbook Name ***")
@@ -123,10 +123,10 @@ def main_window():
                     window.refresh()
 
         elif event == "Split":
-            if is_valid_path(in_list, window) and is_valid_path(output_path, window):
+            if fn.is_valid_path(in_list, window) and fn.is_valid_path(output_path, window):
                 if csv is not False or xls is not False:
 
-                    split_wb(in_list, csv, xls, output_path, window)
+                    fn.split_wb(in_list, csv, xls, output_path, window)
 
                 else:
                     window["-OUTPUT-"].update("*** No Output File Type Selected ***")
@@ -155,4 +155,3 @@ if __name__ == "__main__":
     github_url = 'https://github.com/kbkozlev/Excelize'
 
     main_window()
-
