@@ -73,7 +73,7 @@ def main_window():
                sg.Checkbox(".csv", default=True, key="-CSV-"),
                sg.Checkbox(".xlsx", key="-XLS-")],
               [sg.T("Exec. Status:", s=l_side_t_size, justification="r", font=(font_family, font_size)),
-               sg.T(s=56, justification="l", key="-OUTPUT-")],
+               sg.T(s=58, justification="l", key="-OUTPUT-", auto_size_text=True)],
               [sg.T(s=l_side_t_size), sg.B("Combine", s=b_side_b_size, button_color=b_colour),
                sg.B("Split", s=b_side_b_size, button_color=b_colour),
                sg.Push(), sg.Exit(button_color=exit_b_colour, s=15)]]
