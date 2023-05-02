@@ -6,7 +6,7 @@ import webbrowser
 
 def about_window():
     layout = [[sg.Push(), sg.T(str(window_title), font=(font_family, 12, "bold")), sg.Push()],
-              [sg.T("GitHub:", s=6), sg.T(github_url, enable_events=True, font=(font_family, 10, "underline"), justification='l', auto_size_text=True)],
+              [sg.T("GitHub:", s=6), sg.T(github_url, enable_events=True, font=(font_family, font_size, "underline"), justification='l', auto_size_text=True)],
               [sg.T("License:", s=6), sg.T("Apache-2.0", justification='l')],
               [sg.T("Copyright © 2023 Kaloian Kozlev")]]
 
@@ -72,7 +72,7 @@ def main_window():
               [sg.T("Output File Type(s):", s=l_side_t_size, justification="r"),
                sg.Checkbox(".csv", default=True, key="-CSV-"),
                sg.Checkbox(".xlsx", key="-XLS-")],
-              [sg.T("Exec. Status:", s=l_side_t_size, justification="r", font=(font_family)),
+              [sg.T("Exec. Status:", s=l_side_t_size, justification="r", font=(font_family, font_size)),
                sg.T(s=56, justification="l", key="-OUTPUT-")],
               [sg.T(s=l_side_t_size), sg.B("Combine", s=b_side_b_size, button_color=b_colour),
                sg.B("Split", s=b_side_b_size, button_color=b_colour),
@@ -140,7 +140,7 @@ if __name__ == "__main__":
     release = '1.2.1'
     window_title = f"Excelize v{release}"
     font_family = "Arial"
-    font_size = 20
+    font_size = 10
     b_colour = "#015FB8"
     exit_b_colour = "#D44A5A"
     icon = "icon.ico"
@@ -150,7 +150,7 @@ if __name__ == "__main__":
     l_side_t_size = 16
 
     sg.theme("Reddit")
-    sg.set_options(font=font_family, force_modal_windows=True, dpi_awareness=True, auto_size_buttons=True, auto_size_text=True)
+    sg.set_options(font=(font_family, font_size), force_modal_windows=True, dpi_awareness=True, auto_size_buttons=True, auto_size_text=True)
 
     github_url = 'https://github.com/kbkozlev/Excelize'
 
