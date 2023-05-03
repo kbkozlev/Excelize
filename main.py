@@ -41,7 +41,7 @@ def updates_window(current_release):
 
         if event == "down":
             if latest_release is None:
-                window['-INFO-'].update("No internet connection")
+                window['-INFO-'].update("Cannot fetch version data")
 
             elif int(latest_release) > int(current_release):
                 webbrowser.open(download_url)
