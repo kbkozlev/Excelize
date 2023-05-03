@@ -8,7 +8,7 @@ def about_window():
     layout = [[sg.Push(), sg.T(str(window_title), font=(font_family, 12, "bold")), sg.Push()],
               [sg.T("GitHub:", s=6), sg.T(github_url, enable_events=True, font=(font_family, font_size, "underline"), justification='l', auto_size_text=True)],
               [sg.T("License:", s=6), sg.T("Apache-2.0", justification='l')],
-              [sg.T("Copyright © 2023 Kaloian Kozlev")]]
+              [sg.Push(), sg.T("Copyright © 2023 Kaloian Kozlev", text_color='grey'), sg.Push()]]
 
     window = sg.Window("About", layout, icon=icon)
     while True:
