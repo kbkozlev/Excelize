@@ -25,26 +25,17 @@ def get_latest_version():
     return latest_release, download_url
 
 
-def convert_to_csv(output_folder, name, window, df):
-    outfile = Path(output_folder) / f"{name}.csv"
-    window["-OUTPUT-"].update(f"*** Converting {name} to CSV ***")
+def convert_to_format(output_folder, name, window, df, file_format):
+    outfile = Path(output_folder, f"{name}.{file_format}")
+    window["-OUTPUT-"].update(f"*** Converting {name} to {file_format.upper()} ***")
     window.refresh()
     try:
-        df.to_csv(outfile, index=False)
-
+        if file_format == 'csv':
+            df.to_csv(outfile, index=False)
+        elif file_format == 'xlsx':
+            df.to_excel(outfile, index=False)
     except:
-        window["-OUTPUT-"].update(f"*** Error converting {name} to CSV ***")
-
-
-def convert_to_xls(output_folder, name, window, df):
-    outfile = Path(output_folder) / f"{name}.xlsx"
-    window["-OUTPUT-"].update(f"*** Converting {name} to XLSX ***")
-    window.refresh()
-    try:
-        df.to_excel(outfile, index=False)
-
-    except:
-        window["-OUTPUT-"].update(f"*** Error converting {name} to XLSX ***")
+        window["-OUTPUT-"].update(f"*** Error converting {name} to {file_format.upper()} ***")
 
 
 def split_wb(in_list, csv, xls, output_folder, window):
@@ -57,9 +48,9 @@ def split_wb(in_list, csv, xls, output_folder, window):
                 df = pd.read_excel(xl, sheet_name=name)
 
                 if csv:
-                    convert_to_csv(output_folder, name, window, df)
+                    convert_to_format(output_folder, name, window, df, 'csv')
                 if xls:
-                    convert_to_xls(output_folder, name, window, df)
+                    convert_to_format(output_folder, name, window, df, 'xlsx')
 
         except:
             window["-OUTPUT-"].update(f"*** Error splitting {Path(item).stem} ***")
@@ -77,9 +68,9 @@ def combine_and_convert_ws(in_list, csv, xls, output_folder, window):
             name = Path(item).stem + "_combined"
 
             if csv:
-                convert_to_csv(output_folder, name, window, df)
+                convert_to_format(output_folder, name, window, df, 'csv')
             if xls:
-                convert_to_xls(output_folder, name, window, df)
+                convert_to_format(output_folder, name, window, df, 'xlsx')
 
         except:
             window["-OUTPUT-"].update(f"*** Error combining Worksheets from {Path(item).stem} ***")
@@ -99,9 +90,9 @@ def combine_and_convert_wb(in_list, csv, xls, output_folder, window, name):
             final_df = final_df._append(df, ignore_index=True)
 
             if csv:
-                convert_to_csv(output_folder, name, window, final_df)
+                convert_to_format(output_folder, name, window, df, 'csv')
             if xls:
-                convert_to_xls(output_folder, name, window, final_df)
+                convert_to_format(output_folder, name, window, df, 'xlsx')
 
         except:
             window["-OUTPUT-"].update(f"*** Error loading File {Path(item).stem} ***")

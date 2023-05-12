@@ -76,7 +76,7 @@ def main_window():
                sg.T(s=58, justification="l", key="-OUTPUT-", auto_size_text=True)],
               [sg.T(s=l_side_t_size), sg.B("Combine", s=b_side_b_size, button_color=b_colour),
                sg.B("Split", s=b_side_b_size, button_color=b_colour),
-               sg.Push(), sg.Exit(button_color=exit_b_colour, s=15)]]
+               sg.Push(), sg.Exit(button_color=exit_b_colour, s=16)]]
 
     window = sg.Window(window_title, layout, icon=icon)
 
@@ -100,7 +100,7 @@ def main_window():
         elif event == "Combine":
 
             if fn.is_valid_path(in_list, window) and fn.is_valid_path(output_path, window):
-                if csv is not False or xls is not False:
+                if csv or xls:
 
                     if values["-WS-"]:
                         fn.combine_and_convert_ws(in_list, csv, xls, output_path, window)
@@ -124,7 +124,7 @@ def main_window():
 
         elif event == "Split":
             if fn.is_valid_path(in_list, window) and fn.is_valid_path(output_path, window):
-                if csv is not False or xls is not False:
+                if csv or xls:
 
                     fn.split_wb(in_list, csv, xls, output_path, window)
 
@@ -137,7 +137,7 @@ def main_window():
 
 
 if __name__ == "__main__":
-    release = '1.2.1'
+    release = '1.2.2'
     window_title = f"Excelize v{release}"
     font_family = "Arial"
     font_size = 10
