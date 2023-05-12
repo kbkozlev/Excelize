@@ -17,7 +17,17 @@
 # Excelize
 Excelize is a small app that will allow users to easily manipulate Excel files, by merging, converting and splitting them as needed. 
 <br>Multiple file selection is supported in order to optimize the processing of a large number of files.
-
+     
+# Download and Run
+You can donwload the latest <a href="https://api.github.com/repos/kbkozlev/Excelize/releases/latest">release</a> or use the command line to download the source code:
+     
+```
+     curl -LO https://github.com/kbkozlev/Excelize/archive/refs/heads/master.tar.gz
+     tar -xf master.tar.gz
+     cd Excelize-master
+     pip install -r requirements.txt
+     python main.py     
+```
 # How to use
 <b>Prerequisites:</b> All files must have same header.
 
