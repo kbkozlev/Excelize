@@ -6,19 +6,22 @@ import webbrowser
 
 def about_window():
     layout = [[sg.Push(), sg.T(str(window_title), font=(font_family, 12, "bold")), sg.Push()],
-              [sg.T("GitHub:", s=6), sg.T(github_url, enable_events=True, font=(font_family, font_size, "underline"), justification='l', auto_size_text=True)],
+              [sg.T("GitHub:", s=6), sg.T(github_url, enable_events=True, font=(font_family, font_size, "underline"), justification='l', auto_size_text=True, key='download')],
               [sg.T("License:", s=6), sg.T("Apache-2.0", justification='l')],
               [sg.Push(), sg.T("Copyright © 2023 Kaloian Kozlev", text_color='grey'), sg.Push()]]
 
     window = sg.Window("About", layout, icon=icon)
     while True:
         event, values = window.read()
-        if event == sg.WIN_CLOSED:
-            break
 
-        if event:
-            webbrowser.open(github_url)
-            window.close()
+        match event:
+
+            case sg.WIN_CLOSED:
+                break
+
+            case 'download':
+                webbrowser.open(github_url)
+                window.close()
 
 
 def updates_window(current_release):
@@ -26,29 +29,32 @@ def updates_window(current_release):
     layout = [[sg.Push(), sg.T('Version Info', font=(font_family, 12, 'bold')), sg.Push()],
               [sg.Push(), sg.T(f'Current Version: {current_release}'), sg.T(f'Latest Version: {latest_release}'), sg.Push()],
               [sg.T(s=40, justification="c", key="-INFO-")],
-              [sg.Push(), sg.B('Download', key='down', button_color=b_colour), sg.Push()]]
+              [sg.Push(), sg.B('Download', key='download', button_color=b_colour), sg.Push()]]
 
     window = sg.Window("Check for Updates", layout, icon=icon)
 
-    if latest_release is not None:
-        current_release = current_release.replace(".", "")
-        latest_release = latest_release.replace(".", "")
-
     while True:
         event, values = window.read()
-        if event == sg.WIN_CLOSED:
-            break
 
-        if event == "down":
-            if latest_release is None:
-                window['-INFO-'].update("Cannot fetch version data")
+        match event:
 
-            elif int(latest_release) > int(current_release):
-                webbrowser.open(download_url)
-                window.close()
+            case sg.WIN_CLOSED:
+                break
 
-            else:
-                window['-INFO-'].update("You have the latest version")
+            case 'download':
+                if latest_release is not None:
+                    current_release = current_release.replace(".", "")
+                    latest_release = latest_release.replace(".", "")
+
+                    if int(latest_release) > int(current_release):
+                        webbrowser.open(download_url)
+                        window.close()
+
+                    else:
+                        window['-INFO-'].update("You have the latest version")
+
+                else:
+                    window['-INFO-'].update("Cannot fetch version data")
 
         window.refresh()
         time.sleep(1)
@@ -83,54 +89,57 @@ def main_window():
     while True:
         event, values = window.read()
 
-        if event in (sg.WINDOW_CLOSED, "Exit"):
-            break
-
         in_list = values["-IN-"].split(";")
         output_path = values["-OUT-"]
         csv = values['-CSV-']
         xls = values['-XLS-']
 
-        if event == "About":
-            about_window()
+        match event:
 
-        elif event == "Check for Updates":
-            updates_window(release)
+            case sg.WINDOW_CLOSED:
+                break
 
-        elif event == "Combine":
+            case 'Exit':
+                break
 
-            if fn.is_valid_path(in_list, window) and fn.is_valid_path(output_path, window):
-                if csv or xls:
+            case "About":
+                about_window()
 
-                    if values["-WS-"]:
-                        fn.combine_and_convert_ws(in_list, csv, xls, output_path, window)
+            case "Check for Updates":
+                updates_window(release)
 
-                    elif values["-WB-"]:
-                        name = sg.popup_get_text("New Workbook Name:", default_text="Workbook-Combined",
-                                                 no_titlebar=False, grab_anywhere=True,
-                                                 font=(font_family, font_size), size=(30, 5), button_color=b_colour,
-                                                 icon=icon)
+            case "Combine":
+                if fn.is_valid_path(in_list, window) and fn.is_valid_path(output_path, window):
+                    if csv or xls:
+                        if values["-WS-"]:
+                            fn.combine_and_convert_ws(in_list, csv, xls, output_path, window)
 
-                        if name is not None:
-                            fn.combine_and_convert_wb(in_list, csv, xls, output_path, window, name)
+                        elif values["-WB-"]:
+                            name = sg.popup_get_text("New Workbook Name:", default_text="Workbook-Combined",
+                                                     no_titlebar=False, grab_anywhere=True,
+                                                     font=(font_family, font_size), size=(30, 5), button_color=b_colour,
+                                                     icon=icon)
 
-                        else:
-                            window["-OUTPUT-"].update("*** Missing Workbook Name ***")
-                            window.refresh()
+                            if name is not None:
+                                fn.combine_and_convert_wb(in_list, csv, xls, output_path, window, name)
 
-                else:
-                    window["-OUTPUT-"].update("*** No Output File Type Selected ***")
-                    window.refresh()
+                            else:
+                                window["-OUTPUT-"].update("*** Missing Workbook Name ***")
+                                window.refresh()
 
-        elif event == "Split":
-            if fn.is_valid_path(in_list, window) and fn.is_valid_path(output_path, window):
-                if csv or xls:
+                    else:
+                        window["-OUTPUT-"].update("*** No Output File Type Selected ***")
+                        window.refresh()
 
-                    fn.split_wb(in_list, csv, xls, output_path, window)
+            case "Split":
+                if fn.is_valid_path(in_list, window) and fn.is_valid_path(output_path, window):
+                    if csv or xls:
 
-                else:
-                    window["-OUTPUT-"].update("*** No Output File Type Selected ***")
-                    window.refresh()
+                        fn.split_wb(in_list, csv, xls, output_path, window)
+
+                    else:
+                        window["-OUTPUT-"].update("*** No Output File Type Selected ***")
+                        window.refresh()
 
         time.sleep(1)
         window["-OUTPUT-"].update(" ")
