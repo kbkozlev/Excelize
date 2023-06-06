@@ -32,7 +32,7 @@ def convert_to_format(output_folder, name, window, df, file_format):
     try:
         if file_format == 'csv':
             df.to_csv(outfile, index=False)
-        elif file_format == 'xlsx':
+        if file_format == 'xlsx':
             df.to_excel(outfile, index=False)
     except:
         window["-OUTPUT-"].update(f"*** Error converting {name} to {file_format.upper()} ***")
