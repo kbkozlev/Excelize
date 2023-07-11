@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import functions as fn
+import re
 import time
 import webbrowser
 
@@ -46,8 +47,10 @@ def updates_window(current_release):
 
             case 'download':
                 if latest_release is not None:
-                    current_release = current_release.replace(".", "")
-                    latest_release = latest_release.replace(".", "")
+                    #current_release = current_release.replace(".", "")
+                    current_release = re.sub(r'[^0-9]', '', current_release)
+                    #latest_release = latest_release.replace(".", "")
+                    latest_release = re.sub(r'[^0-9]', '', latest_release)
 
                     if int(latest_release) > int(current_release):
                         webbrowser.open(download_url)
@@ -91,7 +94,7 @@ def main_window():
 
     while True:
         event, values = window.read()
-
+        #NoneType Object Error - needs to be fixed.
         in_list = values["-IN-"].split(";") if values["-IN-"] is not None else ''
         output_path = values["-OUT-"]
         csv = values['-CSV-']
@@ -149,7 +152,7 @@ def main_window():
 
 
 if __name__ == "__main__":
-    release = '1.2.2'
+    release = '1.2.2-beta'
     window_title = f"Excelize v{release}"
     font_family = "Arial"
     font_size = 10
