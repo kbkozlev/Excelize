@@ -47,9 +47,7 @@ def updates_window(current_release):
 
             case 'download':
                 if latest_release is not None:
-                    #current_release = current_release.replace(".", "")
                     current_release = re.sub(r'[^0-9]', '', current_release)
-                    #latest_release = latest_release.replace(".", "")
                     latest_release = re.sub(r'[^0-9]', '', latest_release)
 
                     if int(latest_release) > int(current_release):
