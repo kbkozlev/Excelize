@@ -92,19 +92,16 @@ def main_window():
 
     while True:
         event, values = window.read()
-        #NoneType Object Error - needs to be fixed.
+
+        if event == sg.WIN_CLOSED or event == 'Exit':
+            break
+
         in_list = values["-IN-"].split(";") if values["-IN-"] is not None else ''
         output_path = values["-OUT-"]
         csv = values['-CSV-']
         xls = values['-XLS-']
 
         match event:
-
-            case sg.WINDOW_CLOSED:
-                break
-
-            case 'Exit':
-                break
 
             case "About":
                 about_window()
