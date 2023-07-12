@@ -40,10 +40,10 @@ def updates_window(current_release):
     while True:
         event, values = window.read()
 
-        match event:
+        if event == sg.WIN_CLOSED:
+            break
 
-            case sg.WIN_CLOSED:
-                break
+        match event:
 
             case 'download':
                 if latest_release is not None:
