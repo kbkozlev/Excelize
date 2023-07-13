@@ -7,13 +7,16 @@ import webbrowser
 
 def about_window():
     layout = [[sg.Push(), sg.T(str(window_title), font=(font_family, 12, "bold")), sg.Push()],
-              [sg.T("GitHub:", s=6),
-               sg.T(github_url, enable_events=True, font=(font_family, font_size, "underline"), justification='l',
-                    auto_size_text=True, key='download')],
-              [sg.T("License:", s=6), sg.T("Apache-2.0", justification='l')],
-              [sg.Push(), sg.T("Copyright © 2023 Kaloian Kozlev", text_color='grey'), sg.Push()]]
+              [sg.T(s=40)],
+              [sg.Push(), sg.T(github_url['name'], enable_events=True, font=(font_family, font_size, "underline"),
+                               justification='l', text_color='#0066CC',
+                               auto_size_text=True, key='download'), sg.Push()],
+              [sg.Push(), sg.T("License: Apache-2.0", justification='c'), sg.Push()],
+              [sg.T()],
+              [sg.Push(), sg.T("Copyright © 2023 Kaloian Kozlev", text_color='light grey'), sg.Push()]]
 
     window = sg.Window("About", layout, icon=icon)
+
     while True:
         event, values = window.read()
 
@@ -23,17 +26,18 @@ def about_window():
                 break
 
             case 'download':
-                webbrowser.open(github_url)
+                webbrowser.open(github_url['url'])
                 window.close()
 
 
 def updates_window(current_release):
     latest_release, download_url = fn.get_latest_version()
     layout = [[sg.Push(), sg.T('Version Info', font=(font_family, 12, 'bold')), sg.Push()],
-              [sg.Push(), sg.T(f'Current Version: {current_release}'), sg.T(f'Latest Version: {latest_release}'),
-               sg.Push()],
-              [sg.T(s=40, justification="c", key="-INFO-")],
-              [sg.Push(), sg.B('Download', key='download', button_color=b_colour), sg.Push()]]
+              [sg.T()],
+              [sg.T('Current Version:', s=13), sg.T(f'{current_release}', font=(font_family, 10, 'bold'))],
+              [sg.T(f'Latest Version:', s=13), sg.T(f'{latest_release}', font=(font_family, 10, 'bold'))],
+              [sg.T(s=40, justification="c", key="-INFO-", text_color='red')],
+              [sg.Push(), sg.B('Download', key='download', button_color=b_colour, s=16), sg.Push()]]
 
     window = sg.Window("Check for Updates", layout, icon=icon)
 
@@ -163,6 +167,7 @@ if __name__ == "__main__":
     sg.set_options(font=(font_family, font_size), force_modal_windows=True, dpi_awareness=True, auto_size_buttons=True,
                    auto_size_text=True)
 
-    github_url = 'https://github.com/kbkozlev/Excelize'
+    github_url = {'name': 'Official GitHub Page',
+                  'url': 'https://github.com/kbkozlev/Excelize'}
 
     main_window()
