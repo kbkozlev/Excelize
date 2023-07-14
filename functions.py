@@ -8,7 +8,7 @@ def is_valid_path(in_list, window):
         if item and Path(item).exists():
             return True
         else:
-            window["-OUTPUT-"].update("*** Filepath not valid ***")
+            window["-OUTPUT-"].update("*** Filepath not valid ***", text_color='red')
             window.refresh()
 
 
@@ -35,7 +35,7 @@ def convert_to_format(output_folder, name, window, df, file_format):
         if file_format == 'xlsx':
             df.to_excel(outfile, index=False)
     except:
-        window["-OUTPUT-"].update(f"*** Error converting {name} to {file_format.upper()} ***")
+        window["-OUTPUT-"].update(f"*** Error converting {name} to {file_format.upper()} ***", text_color='red')
 
 
 def split_wb(in_list, csv, xls, output_folder, window):
@@ -53,9 +53,9 @@ def split_wb(in_list, csv, xls, output_folder, window):
                     convert_to_format(output_folder, name, window, df, 'xlsx')
 
         except:
-            window["-OUTPUT-"].update(f"*** Error splitting {Path(item).stem} ***")
+            window["-OUTPUT-"].update(f"*** Error splitting {Path(item).stem} ***", text_color='red')
 
-    window["-OUTPUT-"].update("*** Done ***")
+    window["-OUTPUT-"].update("*** Done ***", text_color='green')
     window.refresh()
 
 
@@ -73,9 +73,9 @@ def combine_and_convert_ws(in_list, csv, xls, output_folder, window):
                 convert_to_format(output_folder, name, window, df, 'xlsx')
 
         except:
-            window["-OUTPUT-"].update(f"*** Error combining Worksheets from {Path(item).stem} ***")
+            window["-OUTPUT-"].update(f"*** Error combining Worksheets from {Path(item).stem} ***", text_color='red')
 
-    window["-OUTPUT-"].update("*** Done ***")
+    window["-OUTPUT-"].update("*** Done ***", text_color='green')
     window.refresh()
 
 
@@ -95,7 +95,7 @@ def combine_and_convert_wb(in_list, csv, xls, output_folder, window, name):
                 convert_to_format(output_folder, name, window, df, 'xlsx')
 
         except:
-            window["-OUTPUT-"].update(f"*** Error loading File {Path(item).stem} ***")
+            window["-OUTPUT-"].update(f"*** Error loading File {Path(item).stem} ***", text_color='red')
 
-    window["-OUTPUT-"].update("*** Done ***")
+    window["-OUTPUT-"].update("*** Done ***", text_color='green')
     window.refresh()

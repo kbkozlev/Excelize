@@ -36,7 +36,7 @@ def updates_window(current_release):
               [sg.T()],
               [sg.T('Current Version:', s=13), sg.T(f'{current_release}', font=(font_family, 10, 'bold'))],
               [sg.T(f'Latest Version:', s=13), sg.T(f'{latest_release}', font=(font_family, 10, 'bold'))],
-              [sg.T(s=40, justification="c", key="-INFO-", text_color='red')],
+              [sg.T(s=40, justification="c", key="-INFO-")],
               [sg.Push(), sg.B('Download', key='download', button_color=b_colour, s=16), sg.Push()]]
 
     window = sg.Window("Check for Updates", layout, icon=icon)
@@ -59,10 +59,10 @@ def updates_window(current_release):
                         window.close()
 
                     else:
-                        window['-INFO-'].update("You have the latest version")
+                        window['-INFO-'].update("You have the latest version", text_color='green')
 
                 else:
-                    window['-INFO-'].update("Cannot fetch version data")
+                    window['-INFO-'].update("Cannot fetch version data", text_color='red')
 
         window.refresh()
         time.sleep(1)
@@ -129,11 +129,11 @@ def main_window():
                                 fn.combine_and_convert_wb(in_list, csv, xls, output_path, window, name)
 
                             else:
-                                window["-OUTPUT-"].update("*** Missing Workbook Name ***")
+                                window["-OUTPUT-"].update("*** Missing Workbook Name ***", text_color='red')
                                 window.refresh()
 
                     else:
-                        window["-OUTPUT-"].update("*** No Output File Type Selected ***")
+                        window["-OUTPUT-"].update("*** No Output File Type Selected ***", text_color='red')
                         window.refresh()
 
             case "Split":
@@ -143,7 +143,7 @@ def main_window():
                         fn.split_wb(in_list, csv, xls, output_path, window)
 
                     else:
-                        window["-OUTPUT-"].update("*** No Output File Type Selected ***")
+                        window["-OUTPUT-"].update("*** No Output File Type Selected ***", text_color='red')
                         window.refresh()
 
         time.sleep(1)
