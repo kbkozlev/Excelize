@@ -19,7 +19,7 @@ Excelize is a small app that will allow users to easily manipulate Excel files, 
 <br>Multiple file selection is supported in order to optimize the processing of a large number of files.
      
 # Download and Run
-You can download the latest <a href="https://api.github.com/repos/kbkozlev/Excelize/releases/latest">release</a> or use the command line to download the source code:
+You can download the latest <a href="https://github.com/kbkozlev/Excelize/releases">release</a> or use the command line to download the source code:
      
 ```
      curl -LO https://github.com/kbkozlev/Excelize/archive/refs/heads/master.tar.gz
