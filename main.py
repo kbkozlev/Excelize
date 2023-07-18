@@ -151,7 +151,7 @@ def main_window():
 
 
 if __name__ == "__main__":
-    release = '1.2.2-beta'
+    release = '1.2.2'
     window_title = f"Excelize v{release}"
     font_family = "Arial"
     font_size = 10
