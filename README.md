@@ -37,4 +37,7 @@ You can download the latest <a href="https://github.com/kbkozlev/Excelize/releas
 4. If you select worksheets you can combine them in a single file, or you can split the original file into seperate files where each worksheet is a workbook.
    <br>If you select workbooks you can combine multiple workbooks into a single file.
 5. The output files can be converted to either xlsx or csv, or both if both checkboxes are selected.
+
+# Support Me
+<a href="https://www.buymeacoffee.com/kbkozlev" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 </div>
